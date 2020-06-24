@@ -17,11 +17,38 @@ class MainActivity : AppCompatActivity() {
     companion object {
         val NOTIFICATION_CHANNEL_ID = "10001"
         private val default_notification_channel_id = "default"
+        lateinit var context:Context
+        fun scheduleNotification(notification: Notification, delay: Int) {
+            val notificationIntent = Intent(context, MyNotificationPublisher::class.java)
+            notificationIntent.putExtra(MyNotificationPublisher.NOTIFICATION_ID, 1)
+            notificationIntent.putExtra(MyNotificationPublisher.NOTIFICATION, notification)
+            val pendingIntent = PendingIntent.getBroadcast(
+                context,
+                0,
+                notificationIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT
+            )
+            val futureInMillis = SystemClock.elapsedRealtime() + delay
+            val alarmManager = (context.getSystemService(Context.ALARM_SERVICE) as AlarmManager)
+            alarmManager[AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis] = pendingIntent
+        }
+
+        fun getNotification(content: String): Notification? {
+            val builder =
+                NotificationCompat.Builder(context, default_notification_channel_id)
+            builder.setContentTitle("Scheduled Notification")
+            builder.setContentText(content)
+            builder.setSmallIcon(R.drawable.ic_launcher_background)
+            builder.setAutoCancel(true)
+            builder.setChannelId(NOTIFICATION_CHANNEL_ID)
+            return builder.build()
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        context=this
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean { // Inflate the menu; this adds items to the action bar if it is present.
@@ -47,29 +74,4 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun scheduleNotification(notification: Notification, delay: Int) {
-        val notificationIntent = Intent(this, MyNotificationPublisher::class.java)
-        notificationIntent.putExtra(MyNotificationPublisher.NOTIFICATION_ID, 1)
-        notificationIntent.putExtra(MyNotificationPublisher.NOTIFICATION, notification)
-        val pendingIntent = PendingIntent.getBroadcast(
-            this,
-            0,
-            notificationIntent,
-            PendingIntent.FLAG_UPDATE_CURRENT
-        )
-        val futureInMillis = SystemClock.elapsedRealtime() + delay
-        val alarmManager = (getSystemService(Context.ALARM_SERVICE) as AlarmManager)
-        alarmManager[AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis] = pendingIntent
-    }
-
-    private fun getNotification(content: String): Notification? {
-        val builder =
-            NotificationCompat.Builder(this, default_notification_channel_id)
-        builder.setContentTitle("Scheduled Notification")
-        builder.setContentText(content)
-        builder.setSmallIcon(R.drawable.ic_launcher_background)
-        builder.setAutoCancel(true)
-        builder.setChannelId(NOTIFICATION_CHANNEL_ID)
-        return builder.build()
-    }
 }

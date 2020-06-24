@@ -11,7 +11,9 @@ import com.example.schedulelocalnotifications.MainActivity.Companion.NOTIFICATIO
 
 
 class MyNotificationPublisher : BroadcastReceiver() {
+
     override fun onReceive(context: Context, intent: Intent) {
+        MainActivity.context=context
         val notificationManager =
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val notification: Notification? =
@@ -27,6 +29,8 @@ class MyNotificationPublisher : BroadcastReceiver() {
         }
         val id = intent.getIntExtra(NOTIFICATION_ID, 0)
         notificationManager.notify(id, notification)
+        MainActivity.getNotification("10 second delay")
+            ?.let { MainActivity.scheduleNotification(it, 10000) }
     }
 
     companion object {
