@@ -6,6 +6,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.os.SystemClock
 import android.view.Menu
 import android.view.MenuItem
@@ -49,6 +50,16 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         context=this
+        val timer = object : CountDownTimer(20000, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                getNotification("10 second delay")
+                    ?.let { scheduleNotification(it, 0) }
+            }
+            override fun onFinish() {
+
+            }
+        }
+        timer.start()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean { // Inflate the menu; this adds items to the action bar if it is present.
