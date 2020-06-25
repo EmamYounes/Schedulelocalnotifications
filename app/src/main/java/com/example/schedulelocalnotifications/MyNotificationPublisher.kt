@@ -31,10 +31,11 @@ class MyNotificationPublisher : BroadcastReceiver() {
         val id = intent.getIntExtra(NOTIFICATION_ID, 0)
         notificationManager.notify(id, notification)
         MainActivity.counterList++
-        MainActivity.context = context
-        MainActivity.initialize()
+//        MainActivity.initialize()
+       /* MainActivity.context = context*/
+
         MainActivity.getNotification("10 second delay")
-            ?.let { MainActivity.scheduleNotification(it, MainActivity.timesArrayList[MainActivity.counterList]) }
+            ?.let { MainActivity.scheduleNotification(it) }
 
     }
 
