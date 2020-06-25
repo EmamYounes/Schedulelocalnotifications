@@ -13,7 +13,6 @@ import com.example.schedulelocalnotifications.MainActivity.Companion.NOTIFICATIO
 
 class MyNotificationPublisher : BroadcastReceiver() {
 
-    var counter  = 0
     override fun onReceive(context: Context, intent: Intent) {
         MainActivity.context = context
         val notificationManager =
@@ -31,7 +30,7 @@ class MyNotificationPublisher : BroadcastReceiver() {
         }
         val id = intent.getIntExtra(NOTIFICATION_ID, 0)
         notificationManager.notify(id, notification)
-        counter++
+        MainActivity.counterList++
         val timer = object : CountDownTimer(10000, 10000) {
             override fun onTick(millisUntilFinished: Long) {
 
@@ -41,7 +40,7 @@ class MyNotificationPublisher : BroadcastReceiver() {
                 MainActivity.context = context
                 MainActivity.initialize()
                 MainActivity.getNotification("10 second delay")
-                    ?.let { MainActivity.scheduleNotification(it, MainActivity.timesArrayList[counter]) }
+                    ?.let { MainActivity.scheduleNotification(it, MainActivity.timesArrayList[MainActivity.counterList]) }
 //                start()
             }
         }

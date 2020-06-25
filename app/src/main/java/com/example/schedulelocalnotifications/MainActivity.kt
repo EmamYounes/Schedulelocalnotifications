@@ -22,6 +22,7 @@ class MainActivity : AppCompatActivity() {
         private val default_notification_channel_id = "default"
         lateinit var context:Context
         var counter = 1
+        var counterList = 0
          var timesArrayList: ArrayList<Long> = ArrayList()
         fun scheduleNotification(notification: Notification, time: Long) {
 
