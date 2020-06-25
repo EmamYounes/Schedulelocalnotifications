@@ -31,20 +31,10 @@ class MyNotificationPublisher : BroadcastReceiver() {
         val id = intent.getIntExtra(NOTIFICATION_ID, 0)
         notificationManager.notify(id, notification)
         MainActivity.counterList++
-        val timer = object : CountDownTimer(10000, 10000) {
-            override fun onTick(millisUntilFinished: Long) {
-
-            }
-
-            override fun onFinish() {
-                MainActivity.context = context
-                MainActivity.initialize()
-                MainActivity.getNotification("10 second delay")
-                    ?.let { MainActivity.scheduleNotification(it, MainActivity.timesArrayList[MainActivity.counterList]) }
-//                start()
-            }
-        }
-        timer.start()
+        MainActivity.context = context
+        MainActivity.initialize()
+        MainActivity.getNotification("10 second delay")
+            ?.let { MainActivity.scheduleNotification(it, MainActivity.timesArrayList[MainActivity.counterList]) }
 
     }
 

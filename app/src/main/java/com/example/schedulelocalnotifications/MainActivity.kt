@@ -91,16 +91,8 @@ class MainActivity : AppCompatActivity() {
         initialize()
 
         context=this
-        val timer = object : CountDownTimer(5000, 5000) {
-            override fun onTick(millisUntilFinished: Long) {
-
-            }
-            override fun onFinish() {
-                getNotification("10 second delay")
-                    ?.let { scheduleNotification(it, timesArrayList.first()) }
-            }
-        }
-        timer.start()
+        getNotification("10 second delay")
+            ?.let { scheduleNotification(it, timesArrayList.first()) }
     }
 
 
